@@ -26,7 +26,7 @@ namespace CadastroClientes.Controllers
         }
 
         // GET: Clientes/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null || _context.Clientes == null)
             {
@@ -34,7 +34,7 @@ namespace CadastroClientes.Controllers
             }
 
             var cliente = await _context.Clientes
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.CPF == id);
             if (cliente == null)
             {
                 return NotFound();
@@ -54,7 +54,7 @@ namespace CadastroClientes.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Email,Telefone")] Cliente cliente)
+        public async Task<IActionResult> Create([Bind("CPF,Nome,DataNascimento,Sexo,Estado,Cidade")] Cliente cliente)
         {
             if (ModelState.IsValid)
             {
@@ -66,7 +66,7 @@ namespace CadastroClientes.Controllers
         }
 
         // GET: Clientes/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.Clientes == null)
             {
@@ -86,9 +86,9 @@ namespace CadastroClientes.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Email,Telefone")] Cliente cliente)
+        public async Task<IActionResult> Edit(string id, [Bind("CPF,Nome,DataNascimento,Sexo,Estado,Cidade")] Cliente cliente)
         {
-            if (id != cliente.Id)
+            if (id != cliente.CPF)
             {
                 return NotFound();
             }
@@ -102,7 +102,7 @@ namespace CadastroClientes.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ClienteExists(cliente.Id))
+                    if (!ClienteExists(cliente.CPF))
                     {
                         return NotFound();
                     }
@@ -117,7 +117,7 @@ namespace CadastroClientes.Controllers
         }
 
         // GET: Clientes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null || _context.Clientes == null)
             {
@@ -125,7 +125,7 @@ namespace CadastroClientes.Controllers
             }
 
             var cliente = await _context.Clientes
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.CPF == id);
             if (cliente == null)
             {
                 return NotFound();
@@ -137,7 +137,7 @@ namespace CadastroClientes.Controllers
         // POST: Clientes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (_context.Clientes == null)
             {
@@ -153,9 +153,9 @@ namespace CadastroClientes.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ClienteExists(int id)
+        private bool ClienteExists(string id)
         {
-          return _context.Clientes.Any(e => e.Id == id);
+          return _context.Clientes.Any(e => e.CPF == id);
         }
     }
 }
